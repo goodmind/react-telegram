@@ -1,7 +1,8 @@
 {
-    "extends": "standard",
-    "plugins": [
-        "standard",
-        "promise"
-    ]
+  "extends": "standard",
+  "plugins": [
+    "react",
+    "standard",
+    "promise"
+  ]
 }
