@@ -4,6 +4,7 @@
   "description": "A react renderer for Telegram Bot API",
   "main": "./lib/index.js",
   "scripts": {
+    "example": "rm -rf .compiled && babel examples --out-dir .compiled",
     "lint": "eslint 'src/**/*.js'",
     "watch": "babel -w ./src --out-dir ./lib",
     "build": "babel ./src --out-dir ./lib",
@@ -34,10 +35,13 @@
     "eslint": "^3.15.0",
     "eslint-config-standard": "^6.2.1",
     "eslint-plugin-promise": "^3.4.1",
+    "eslint-plugin-react": "^6.9.0",
     "eslint-plugin-standard": "^2.0.1",
     "mocha": "^2.4.5",
     "react": "^15.4.2",
-    "react-dom": "^15.4.2"
+    "react-dom": "^15.4.2",
+    "react-router": "^3.0.2",
+    "history": "^3.0.0"
   },
   "dependencies": {
     "invariant": "^2.2.0",
