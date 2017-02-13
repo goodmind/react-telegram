@@ -1,20 +1,35 @@
-export class Widget {
+import { EventEmitter } from 'events'
+export class Widget extends EventEmitter {
   constructor (props) {
+    super()
     this.content = null
     this.children = []
+    this.props = props
   }
 
-  on (event, callback) {
-    console.log(this)
+  off (eventName, listener) {
+    this.removeListener(eventName, listener)
   }
 
   setContent (text) {
     this.content = text
-    console.log(this)
   }
 
   append (node) {
+    node.parent = this
     this.children.push(node)
-    console.log(this)
+  }
+
+  remove (node) {
+    if (node.parent !== this) return
+    const i = this.children.indexOf(node)
+    if (!~i) return
+
+    node.parent = null
+    this.children.splice(i, 1)
+  }
+
+  destroy () {
+    if (this.parent) this.parent.remove(this)
   }
 }
