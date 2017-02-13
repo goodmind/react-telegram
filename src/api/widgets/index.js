@@ -9,5 +9,6 @@ export const widgets = {
   'message': h(Message),
   'inline-keyboard-markup': h(InlineKeyboardMarkup),
   'inline-button': h(InlineButton),
-  'inline-row': h()
+  'inline-row': h(),
+  'a': h(InlineButton)
 }
