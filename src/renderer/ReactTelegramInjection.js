@@ -16,6 +16,10 @@ export default function inject () {
     ReactTelegramComponent
   )
 
+  ReactInjection.EmptyComponent.injectEmptyComponentFactory(instantiate => {
+    return new ReactTelegramEmptyComponent(instantiate)
+  })
+
   ReactInjection.Updates.injectReconcileTransaction(
     ReactTelegramReconcileTransaction
   )
@@ -24,13 +28,8 @@ export default function inject () {
     ReactDefaultBatchingStrategy
   )
 
-  ReactInjection.EmptyComponent.injectEmptyComponentFactory(instantiate => {
-    return new ReactTelegramEmptyComponent(instantiate)
+  ReactComponentEnvironment.injection.injectEnvironment({
+    processChildrenUpdates: function () {},
+    replaceNodeWithMarkup: function () {}
   })
-
-  // NOTE: we're monkeypatching ReactComponentEnvironment because
-  // ReactInjection.Component.injectEnvironment() currently throws,
-  // as it's already injected by ReactDOM for backward compat in 0.14 betas.
-  ReactComponentEnvironment.processChildrenUpdates = function () {}
-  ReactComponentEnvironment.replaceNodeWithMarkupByID = function () {}
 }
