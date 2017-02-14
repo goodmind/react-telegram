@@ -25,31 +25,7 @@ npm install react-telegram
 
 ## Usage
 
-### Rendering a basic application
-
-```jsx
-import React, {Component} from 'react';
-import {render} from 'react-telegram';
-
-// Rendering a simple centered box
-class App extends Component {
-  render() {
-    return (
-      <box top="center"
-           left="center"
-           width="50%"
-           height="50%"
-           border={{type: 'line'}}
-           style={{border: {fg: 'blue'}}}>
-        Hello World!
-      </box>
-    );
-  }
-}
-
-// Rendering the React app using our screen
-const component = render(<App />);
-```
+See [examples](examples/test.jsx)
 
 ## Contribution
 
