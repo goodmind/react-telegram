@@ -30,12 +30,13 @@ export class Telegram extends TeleBot {
 
     this.on('/*', msg => {
       const [url, data] = splitIn(msg.text)
+      const state = { data, msg, new: true }
       if (!this.history.getCurrentLocation) {
-        this.history.push(url, { data, msg })
+        this.history.push(url, state)
       } else {
         this.history.push({
           pathname: url,
-          state: { data, msg }
+          state
         })
       }
     })
