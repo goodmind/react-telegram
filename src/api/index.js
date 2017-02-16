@@ -7,20 +7,40 @@ export class Screen {
     this.__telegram_screen = true
     this.bot = bot
     this.children = []
+    this.msg = null
   }
 
-  renderMessage (msg) {
+  async send (chatId, text, opts = {}) {
+    let m
+    if (this.msg) {
+      const o = { chatId, messageId: this.msg.message_id }
+      await this.bot.editText(o, text)
+      m = await this.bot.editMarkup(o, opts.markup)
+    } else {
+      m = await this.bot.sendMessage(chatId, text, opts)
+    }
+    this.msg = m.result
+    return m
+  }
+
+  async renderMessage (msg) {
     const markup = msg.children[0]
-    return this.bot.sendMessage(msg.to.id, msg.content, { markup: this.renderNode(markup) }).then(({ result: m }) => {
-      this.bot.callbackStorage[m.message_id] = (cb) => {
+
+    if (markup) {
+      const { result: m } = await this.send(msg.to.id, msg.content, { markup: this.renderNode(markup) })
+      this.bot.callbackStorage[m.message_id] = cb => {
         const btn = markup.children[0]
-        btn.emit('event', 'click', {
+        const event = {
           button: 0,
           defaultPrevented: false,
           preventDefault: () => {}
-        })
+        }
+        btn.emit('event', 'click', event)
       }
-    })
+      return m
+    }
+
+    return this.send(msg.to.id, msg.content)
   }
 
   renderNode (node) {
@@ -33,7 +53,7 @@ export class Screen {
       ])
     }
     if (node instanceof InlineButton) {
-      return this.bot.inlineButton('Command button', { callback: '/hello' })
+      return this.bot.inlineButton(node.content, { callback: '/hello' })
     }
     return undefined
   }
