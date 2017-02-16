@@ -1,5 +1,6 @@
 import TeleBot from 'telebot'
 import invariant from 'invariant'
+import historyEnhance from './historyEnhance'
 import { render } from './renderer/render'
 
 const splitIn = str => str.indexOf(' ') !== -1 ? [
@@ -16,7 +17,7 @@ export class Telegram extends TeleBot {
     )
 
     this.callbackStorage = {}
-    this.history = history
+    this.history = historyEnhance(history, history.getCurrentLocation ? 3 : 4)
     this.render = render
     this.registerCallbacks()
   }
