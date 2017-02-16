@@ -6,7 +6,7 @@ import { Router, Route, Link } from 'react-router'
 const App = ({ children }) => children
 const Start = ({ location: { state } }) => {
   return (
-    <message to={state.msg.from}>
+    <message to={state.msg.from} edit={!state.new}>
       Hello, world!
       <inline-keyboard-markup>
         <Link to="/ping">Ping</Link>
@@ -15,12 +15,12 @@ const Start = ({ location: { state } }) => {
   )
 }
 const NoMatch = ({ location: { state } }) => (
-  <message to={state.msg.from}>
+  <message to={state.msg.from} edit={!state.new}>
     Unknown route
   </message>
 )
 const Pong = ({ location: { state } }) => (
-  <message to={state.msg.from}>
+  <message to={state.msg.from} edit={!state.new}>
     Pong
     <inline-keyboard-markup>
       <Link to="/start">Back</Link>
