@@ -12,7 +12,7 @@ export class Screen {
 
   async send (chatId, text, opts = {}) {
     let m
-    if (this.msg) {
+    if (this.msg && opts.edit) {
       const o = { chatId, messageId: this.msg.message_id }
       await this.bot.editText(o, text)
       m = await this.bot.editMarkup(o, opts.markup)
@@ -25,9 +25,10 @@ export class Screen {
 
   async renderMessage (msg) {
     const markup = msg.children[0]
+    const edit = msg.edit
 
     if (markup) {
-      const { result: m } = await this.send(msg.to.id, msg.content, { markup: this.renderNode(markup) })
+      const { result: m } = await this.send(msg.to.id, msg.content, { edit, markup: this.renderNode(markup) })
       this.bot.callbackStorage[m.message_id] = cb => {
         const btn = markup.children[0]
         const event = {
@@ -40,7 +41,7 @@ export class Screen {
       return m
     }
 
-    return this.send(msg.to.id, msg.content)
+    return this.send(msg.to.id, msg.content, { edit })
   }
 
   renderNode (node) {
