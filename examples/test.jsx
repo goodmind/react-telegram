@@ -9,9 +9,7 @@ const Start = ({ location: { state } }) => {
     <message to={state.msg.from}>
       Hello, world!
       <inline-keyboard-markup>
-        <Link to="/ping" /><Link to="/ping" /><Link to="/ping" />
-        <Link to="/ping" /><Link to="/ping" /><Link to="/ping" />
-        <Link to="/ping" /><Link to="/ping" /><Link to="/ping" />
+        <Link to="/ping">Ping</Link>
       </inline-keyboard-markup>
     </message>
   )
@@ -21,22 +19,27 @@ const NoMatch = ({ location: { state } }) => (
     Unknown route
   </message>
 )
-const Pong = (props) => {
-  return <message to={props.location.state.msg.from}>Pong</message>
-}
+const Pong = ({ location: { state } }) => (
+  <message to={state.msg.from}>
+    Pong
+    <inline-keyboard-markup>
+      <Link to="/start">Back</Link>
+    </inline-keyboard-markup>
+  </message>
+)
 
 
-const ACCESS_TOKEN = `ACCESS_TOKEN`
+const ACCESS_TOKEN = process.env.TOKEN
 const history = createMemoryHistory()
-history.listen((location, action) => {
+const bot = new Telegram(ACCESS_TOKEN, history)
+
+bot.history.listen((location, action) => {
   console.log(action, location.pathname, location.state)
 })
 
-const bot = new Telegram(ACCESS_TOKEN, history)
-
 bot.connect()
 bot.render((
-  <Router history={history}>
+  <Router history={bot.history}>
     <Route path="/" component={App}>
       <Route path="start" component={Start} />
       <Route path="ping" component={Pong} />
