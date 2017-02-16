@@ -26,6 +26,10 @@
     "url": "https://github.com/goodmind/react-telegram/issues"
   },
   "homepage": "https://github.com/goodmind/react-telegram#readme",
+  "peerDependencies": {
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2"
+  },
   "devDependencies": {
     "babel-cli": "^6.6.4",
     "babel-plugin-transform-async-to-generator": "^6.22.0",
