@@ -4,5 +4,6 @@ export class Message extends Widget {
   constructor (props) {
     super(props)
     this.to = props.to
+    this.edit = props.edit
   }
 }
