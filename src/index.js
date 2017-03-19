@@ -9,15 +9,9 @@ const splitIn = str => str.indexOf(' ') !== -1 ? [
 ] : [str]
 
 export class Telegram extends TeleBot {
-  constructor (options, history) {
+  constructor (options) {
     super(options)
-    invariant(
-      history !== undefined,
-      'Telegram: You must pass a valid History.'
-    )
-
     this.callbackStorage = {}
-    this.history = historyEnhance(history, history.getCurrentLocation ? 3 : 4)
     this.render = render
     this.registerCallbacks()
   }
@@ -27,19 +21,33 @@ export class Telegram extends TeleBot {
       const callback = this.callbackStorage[cb.message.message_id]
       if (callback) callback(cb)
     })
+  }
 
+  pushHistory (history, url, state) {
+    if (!history.getCurrentLocation) {
+      history.push(url, state)
+    } else {
+      history.push({
+        pathname: url,
+        state
+      })
+    }
+  }
+
+  useHistory (history) {
+    invariant(
+      history !== undefined,
+      'Telegram: You must pass a valid History.'
+    )
+
+    history = historyEnhance(history, history.getCurrentLocation ? 3 : 4)
     this.on('/*', msg => {
       const [url, data] = splitIn(msg.text)
       const state = { data, msg, new: true }
-      if (!this.history.getCurrentLocation) {
-        this.history.push(url, state)
-      } else {
-        this.history.push({
-          pathname: url,
-          state
-        })
-      }
+      this.pushHistory(history, url, state)
     })
+
+    return history
   }
 }
 
