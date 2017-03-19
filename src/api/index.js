@@ -7,19 +7,20 @@ export class Screen {
     this.__telegram_screen = true
     this.bot = bot
     this.children = []
-    this.msg = null
+    this.msgs = {}
   }
 
   async send (chatId, text, opts = {}) {
     let m
-    if (this.msg && opts.edit) {
-      const o = { chatId, messageId: this.msg.message_id }
+    let msg = this.msgs[chatId]
+    if (msg && opts.edit) {
+      const o = { chatId, messageId: msg.message_id }
       await this.bot.editText(o, text)
       m = await this.bot.editMarkup(o, opts.markup)
     } else {
       m = await this.bot.sendMessage(chatId, text, opts)
     }
-    this.msg = m.result
+    this.msgs[chatId] = m.result
     return m
   }
 
