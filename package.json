@@ -45,8 +45,13 @@
     "history": "^3.0.0",
     "mocha": "^2.4.5",
     "react": "^15.4.2",
+    "react-devtools": "^2.0.12",
     "react-dom": "^15.4.2",
-    "react-router": "^3.0.2"
+    "react-redux": "^5.0.2",
+    "react-router": "^3.0.2",
+    "react-router-redux": "^4.0.8",
+    "redux": "^3.6.0",
+    "ws": "^2.0.3"
   },
   "dependencies": {
     "invariant": "^2.2.0",
